@@ -13,13 +13,13 @@ object CourseContract {
      * content authority is the package name for the app, which is guaranteed to be unique on the
      * device.
      */
-    val CONTENT_AUTHORITY = "com.ashmakesstuff.bunky"
+    const val CONTENT_AUTHORITY = "com.ashmakesstuff.bunky"
 
     /**
      * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
      * the content provider.
      */
-    val BASE_CONTENT_URI = Uri.parse("content://$CONTENT_AUTHORITY")
+    val BASE_CONTENT_URI = Uri.parse("content://$CONTENT_AUTHORITY")!!
 
     /**
      * Possible path (appended to base content URI for possible URI's)
@@ -27,7 +27,7 @@ object CourseContract {
      * looking at course data. content://com.ashmakesstuff.testbunky/staff/ will fail,
      * as the ContentProvider hasn't been given any information on what to do with "staff".
      */
-    val PATH_COURSES = "courses"
+    const val PATH_COURSES = "courses"
 
     /**
      * Inner class that defines constant values for the courses database table.
@@ -37,7 +37,7 @@ object CourseContract {
         companion object {
 
             // Complete Content Uri
-            val CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_COURSES)
+            val CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_COURSES)!!
 
             /**
              * The MIME type of the [.CONTENT_URI] for a list of courses.

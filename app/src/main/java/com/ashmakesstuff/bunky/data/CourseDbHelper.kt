@@ -9,8 +9,6 @@ class CourseDbHelper
 
     companion object {
 
-        val LOG_TAG = CourseDbHelper::class.java.simpleName
-
         // Name of the DataBase file
         private const val DATABASE_NAME = "bunky.db"
         // DataBase Version number
