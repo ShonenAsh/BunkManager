@@ -18,12 +18,15 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.ashmakesstuff.bunky.data.CourseContract
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_editor.*
 
 class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
-     * Identifier for the pet data loader
+     * Identifier for the course data loader
      */
 
     // Content URI for the existing course (null if its a new Course)
@@ -36,11 +39,10 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
      */
 
     private lateinit var mNameEditText: EditText
-    private lateinit var mCreditEditText: EditText
     private lateinit var mClassroomEditText: EditText
     private lateinit var mBunkedEditText: EditText
     private lateinit var mConductedEditText: EditText
-    private lateinit var mInstructorEditText: EditText
+    private lateinit var mAdView: AdView
 
     // Check fo changes made by the user while editing
     private var mCourseHasChanged: Boolean = false
@@ -53,6 +55,12 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editor)
+
+        // AdView initialize
+        MobileAds.initialize(this@EditorActivity, this@EditorActivity.getString(R.string.ad_app_id))
+        mAdView = findViewById(R.id.editor_adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         // Examine the intent that was used to launch this activity,
         // in order to determine whether we are creating a new course or editing an existing one
@@ -74,64 +82,81 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
         }
         // Find all the relevant views which are required to read data from the user
         mNameEditText = edit_course_name
-        mCreditEditText = edit_credits
         mClassroomEditText = edit_classroom
         mBunkedEditText = edit_bunked
         mConductedEditText = edit_conducted
-        mInstructorEditText = edit_instructor
 
         // Setup the OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
         // when the user tries to exit the editor without saving
         mNameEditText.setOnTouchListener(mTouchListener)
-        mCreditEditText.setOnTouchListener(mTouchListener)
         mClassroomEditText.setOnTouchListener(mTouchListener)
         mBunkedEditText.setOnTouchListener(mTouchListener)
         mConductedEditText.setOnTouchListener(mTouchListener)
-        mInstructorEditText.setOnTouchListener(mTouchListener)
 
     }
 
     private fun saveCourse() {
         // Read the data from the input fields
         val nameString = mNameEditText.text.toString().trim()
-        val creditString = mCreditEditText.text.toString().trim()
         var classroomString = mClassroomEditText.text.toString().trim()
         val bunkedString = mBunkedEditText.text.toString().trim()
         val conductedString = mConductedEditText.text.toString().trim()
-        val instructorString = mInstructorEditText.text.toString().trim()
 
-        var bunked = 0
-        var conducted = 1
+        val bunked: Int
+        val conducted: Int
 
-        if (mCurrentCourseUri == null &&
-                TextUtils.isEmpty(nameString)) {
+        if (TextUtils.isEmpty(nameString)) {
             Toast.makeText(this, "Please enter the course name", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // If the number of classes bunked isn't specified or is invalid, we set it to 0.
-        if (!TextUtils.isEmpty(bunkedString) && Integer.parseInt(bunkedString) >= 0)
-            bunked = Integer.parseInt(bunkedString)
+        if (!TextUtils.isEmpty(bunkedString) || !TextUtils.isEmpty(bunkedString)) {
 
-        // If the number of classes conducted isn't specified or is invalid, we set it to 1.
-        if (!TextUtils.isEmpty(conductedString) && Integer.parseInt(conductedString) > 0)
-            conducted = Integer.parseInt(conductedString)
+            if (bunkedString.toLong() > Int.MAX_VALUE || conductedString.toLong() > Int.MAX_VALUE) {
+                Toast.makeText(this@EditorActivity, "Integer limit exceeds", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // If the number of classes bunked isn't invalid
+            if (Integer.parseInt(bunkedString) >= 0)
+                bunked = Integer.parseInt(bunkedString)
+            else {
+                Toast.makeText(this@EditorActivity, "Bunked cannot be less than 0", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // If the number of classes conducted isn't invalid
+            if (Integer.parseInt(conductedString) > 0)
+                conducted = Integer.parseInt(conductedString)
+            else {
+                Toast.makeText(this@EditorActivity, "Conducted cannot be less than 1", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+        } else {
+            Toast.makeText(this@EditorActivity, "Bunked/Conducted cannot be empty", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         // If the classroom isn't specified we set it to "Not Specified"
         if (TextUtils.isEmpty(classroomString))
             classroomString = "Not Specified"
+
+        if (conducted < bunked) {
+            Toast.makeText(this@EditorActivity, "Conducted should be more than bunked", Toast.LENGTH_SHORT).show()
+            return
+        }
+
 
         // Create a ContentValue object where column names are the keys.
         // and add the newly accepted data.
         val values = ContentValues()
 
         values.put(CourseContract.CourseEntry.COLUMN_COURSE_NAME, nameString)
-        values.put(CourseContract.CourseEntry.COLUMN_COURSE_CREDITS, creditString)
         values.put(CourseContract.CourseEntry.COLUMN_CLASSROOM, classroomString)
         values.put(CourseContract.CourseEntry.COLUMN_CLASSES_BUNKED, bunked)
         values.put(CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED, conducted)
-        values.put(CourseContract.CourseEntry.COLUMN_INSTRUCTOR, instructorString)
 
         // An if..else block for inserting a new course or updating an existing course.
         if (mCurrentCourseUri == null) {
@@ -159,7 +184,6 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
             else
             // Otherwise, the update was successful and we can display a toast.
                 Toast.makeText(this, getString(R.string.editor_update_course_successful), Toast.LENGTH_SHORT).show()
-
         }
     }
 
@@ -174,7 +198,7 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
         }
         builder.setNegativeButton(R.string.cancel) { dialog, id ->
             // User clicked the "Cancel" button, so dismiss the dialog
-            // and continue editing the pet.
+            // and continue editing the course.
             dialog?.dismiss()
         }
 
@@ -290,11 +314,9 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
         // Define a projection that specifies the columns from the table we care about.
         val projection = arrayOf(CourseContract.CourseEntry._ID,
                 CourseContract.CourseEntry.COLUMN_COURSE_NAME,
-                CourseContract.CourseEntry.COLUMN_COURSE_CREDITS,
                 CourseContract.CourseEntry.COLUMN_CLASSROOM,
                 CourseContract.CourseEntry.COLUMN_CLASSES_BUNKED,
-                CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED,
-                CourseContract.CourseEntry.COLUMN_INSTRUCTOR)
+                CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED)
 
         // This loader will execute the ContentProvider's query method on a background thread
         return CursorLoader(this,
@@ -313,17 +335,13 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
         if (cursor.moveToFirst()) {
             // Find the columns of the course attributes that we're interested in
             val nameColumnIndex = cursor.getColumnIndex(CourseContract.CourseEntry.COLUMN_COURSE_NAME)
-            val creditsColumnIndex = cursor.getColumnIndex(CourseContract.CourseEntry.COLUMN_COURSE_CREDITS)
             val classroomColumnIndex = cursor.getColumnIndex(CourseContract.CourseEntry.COLUMN_CLASSROOM)
             val bunkedColumnIndex = cursor.getColumnIndex(CourseContract.CourseEntry.COLUMN_CLASSES_BUNKED)
             val conductedColumnIndex = cursor.getColumnIndex(CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED)
-            val instructorColumnIndex = cursor.getColumnIndex(CourseContract.CourseEntry.COLUMN_INSTRUCTOR)
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(cursor.getString(nameColumnIndex))
-            mCreditEditText.setText(cursor.getString(creditsColumnIndex))
             mClassroomEditText.setText(cursor.getString(classroomColumnIndex))
-            mInstructorEditText.setText(cursor.getString(instructorColumnIndex))
 
             // getInt() returns an Int which is converted to String
             mBunkedEditText.setText(cursor.getInt(bunkedColumnIndex).toString())
@@ -334,11 +352,9 @@ class EditorActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
     override fun onLoaderReset(loader: Loader<Cursor>?) {
         // If the loader is invalidated, clear out all the data from the input fields
         mNameEditText.setText("")
-        mCreditEditText.setText("")
         mClassroomEditText.setText("")
         mBunkedEditText.setText("")
         mConductedEditText.setText("")
-        mInstructorEditText.setText("")
     }
 
 }

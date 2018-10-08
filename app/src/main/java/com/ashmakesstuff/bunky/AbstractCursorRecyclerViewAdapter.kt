@@ -9,33 +9,35 @@ import android.support.v7.widget.RecyclerView
  * Created by skyfishjy on 10/31/14.
  */
 
-abstract class AbstractCursorRecyclerViewAdapter<VH : RecyclerView.ViewHolder>(private val mContext: Context, private var cursor: Cursor?) : RecyclerView.Adapter<VH>() {
+abstract class AbstractCursorRecyclerViewAdapter<VH : RecyclerView.ViewHolder>(private val mContext: Context, cursor: Cursor?) : RecyclerView.Adapter<VH>() {
 
     private var mDataValid: Boolean = false
 
     private var mRowIdColumn: Int = 0
 
+    private var mCursor: Cursor? = null
+
     private val mDataSetObserver: DataSetObserver?
 
     init {
-        this.cursor = cursor
-        mDataValid = cursor != null
-        mRowIdColumn = if (mDataValid) this.cursor!!.getColumnIndex("_id") else -1
+        mCursor = cursor
+        mDataValid = mCursor != null
+        mRowIdColumn = if (mDataValid) this.mCursor!!.getColumnIndex("_id") else -1
         mDataSetObserver = NotifyingDataSetObserver()
-        if (this.cursor != null) {
-            this.cursor!!.registerDataSetObserver(mDataSetObserver)
+        if (this.mCursor != null) {
+            this.mCursor!!.registerDataSetObserver(mDataSetObserver)
         }
     }
 
     override fun getItemCount(): Int {
-        return if (mDataValid && cursor != null) {
-            cursor!!.count
+        return if (mDataValid && mCursor != null) {
+            mCursor!!.count
         } else 0
     }
 
     override fun getItemId(position: Int): Long {
-        return if (mDataValid && cursor != null && cursor!!.moveToPosition(position)) {
-            cursor!!.getLong(mRowIdColumn)
+        return if (mDataValid && mCursor != null && mCursor!!.moveToPosition(position)) {
+            mCursor!!.getLong(mRowIdColumn)
         } else 0
     }
 
@@ -50,10 +52,10 @@ abstract class AbstractCursorRecyclerViewAdapter<VH : RecyclerView.ViewHolder>(p
         if (!mDataValid) {
             throw IllegalStateException("this should only be called when the cursor is valid")
         }
-        if (!cursor!!.moveToPosition(position)) {
+        if (!mCursor!!.moveToPosition(position)) {
             throw IllegalStateException("couldn't move cursor to position $position")
         }
-        onBindViewHolder(viewHolder, cursor!! , position)
+        onBindViewHolder(viewHolder, mCursor!! , position)
     }
 
     /**
@@ -71,17 +73,17 @@ abstract class AbstractCursorRecyclerViewAdapter<VH : RecyclerView.ViewHolder>(p
      * closed.
      */
     fun swapCursor(newCursor: Cursor?): Cursor? {
-        if (newCursor === cursor) {
+        if (newCursor === mCursor) {
             return null
         }
-        val oldCursor = cursor
+        val oldCursor = mCursor
         if (oldCursor != null && mDataSetObserver != null) {
             oldCursor.unregisterDataSetObserver(mDataSetObserver)
         }
-        cursor = newCursor
-        if (cursor != null) {
+        mCursor = newCursor
+        if (mCursor != null) {
             if (mDataSetObserver != null) {
-                cursor!!.registerDataSetObserver(mDataSetObserver)
+                mCursor!!.registerDataSetObserver(mDataSetObserver)
             }
             mRowIdColumn = newCursor!!.getColumnIndexOrThrow("_id")
             mDataValid = true

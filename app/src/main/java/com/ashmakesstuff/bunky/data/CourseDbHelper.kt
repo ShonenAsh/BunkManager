@@ -12,7 +12,7 @@ class CourseDbHelper
         // Name of the DataBase file
         private const val DATABASE_NAME = "bunky.db"
         // DataBase Version number
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -20,17 +20,16 @@ class CourseDbHelper
         val SQL_CREATE_COURSES_TABLE = ("CREATE TABLE " + CourseContract.CourseEntry.TABLE_NAME + " ("
                 + CourseContract.CourseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + CourseContract.CourseEntry.COLUMN_COURSE_NAME + " TEXT NOT NULL, "
-                + CourseContract.CourseEntry.COLUMN_COURSE_CREDITS + " REAL, "
+                + CourseContract.CourseEntry.COLUMN_LAST_UPDATED + " INTEGER NOT NULL DEFAULT 0, "
                 + CourseContract.CourseEntry.COLUMN_CLASSROOM + " TEXT, "
                 + CourseContract.CourseEntry.COLUMN_CLASSES_BUNKED + " INTEGER NOT NULL DEFAULT 0, "
-                + CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED + " INTEGER NOT NULL DEFAULT 1, "
-                + CourseContract.CourseEntry.COLUMN_INSTRUCTOR + " TEXT);")
+                + CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED + " INTEGER NOT NULL DEFAULT 1);")
 
         // Execute the SQL statements
         db.execSQL(SQL_CREATE_COURSES_TABLE)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, i: Int, i1: Int) {
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // Nothing here yet
     }
 }

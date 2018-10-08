@@ -1,144 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     tools:context=".EditorActivity">
 
-    <TextView
-        android:id="@+id/course_text_view"
-        style="@style/CategoryStyle"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/course_overview"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edit_course_name"
-        app:layout_constraintEnd_toStartOf="@+id/separator_guideline"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent" />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/editor_constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/course_text_view"
+            style="@style/CategoryStyle"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/course_overview"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_course_name"
+            app:layout_constraintEnd_toStartOf="@+id/separator_guideline"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-    <EditText
-        android:id="@+id/edit_course_name"
-        style="@style/EditorFieldStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:hint="@string/course_hint_name"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/separator_guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/edit_course_name"
+            style="@style/EditorFieldStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/course_hint_name"
+            android:inputType="textPersonName"
+            android:maxLength="25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/separator_guideline"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Breed field -->
+        <!-- Breed field -->
 
-    <android.support.constraint.Guideline
-        android:id="@+id/separator_guideline"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="141dp" />
+        <android.support.constraint.Guideline
+            android:id="@+id/separator_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="141dp" />
 
-    <EditText
-        android:id="@+id/edit_credits"
-        style="@style/EditorFieldStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/course_hint_credits"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/separator_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/edit_course_name" />
+        <EditText
+            android:id="@+id/edit_classroom"
+            style="@style/EditorFieldStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/course_hint_classroom"
+            android:inputType="textPersonName"
+            android:maxLength="25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/separator_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/edit_course_name" />
 
-    <TextView
-        android:id="@+id/instructor_text_view"
-        style="@style/CategoryStyle"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/instructor_overview"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edit_instructor"
-        app:layout_constraintEnd_toStartOf="@+id/separator_guideline"
-        app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/edit_bunked"
+            style="@style/EditorFieldStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/classes_hint_bunked"
+            android:inputType="number"
+            android:maxLength="8"
+            android:singleLine="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/separator_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/edit_classroom" />
 
-    <EditText
-        android:id="@+id/edit_instructor"
-        style="@style/EditorFieldStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/instructor_hint_name"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/separator_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/edit_bunked" />
+        <TextView
+            android:id="@+id/classes_text_view"
+            style="@style/CategoryStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/classes_overview"
+            app:layout_constraintBaseline_toBaselineOf="@+id/edit_bunked"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/edit_classroom"
-        style="@style/EditorFieldStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/course_hint_classroom"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/separator_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/edit_credits" />
+        <EditText
+            android:id="@+id/edit_conducted"
+            style="@style/EditorFieldStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:ems="10"
+            android:hint="@string/classes_hint_conducted"
+            android:inputType="number"
+            android:maxLength="8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/separator_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/edit_bunked" />
 
-    <EditText
-        android:id="@+id/edit_bunked"
-        style="@style/EditorFieldStyle"
-        android:layout_width="105dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/classes_hint_bunked"
-        android:inputType="numberSigned"
-        app:layout_constraintStart_toStartOf="@+id/separator_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/edit_classroom" />
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/editor_adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/editor_bottom_ad_banner"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintTop_toBottomOf="@+id/edit_conducted"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/classes_text_view"
-        style="@style/CategoryStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/classes_overview"
-        app:layout_constraintBaseline_toBaselineOf="@+id/edit_bunked"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/edit_conducted"
-        style="@style/EditorFieldStyle"
-        android:layout_width="105dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/classes_hint_conducted"
-        android:inputType="numberSigned"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_bunked"
-        app:layout_constraintTop_toBottomOf="@+id/edit_classroom" />
+        </com.google.android.gms.ads.AdView>
 
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

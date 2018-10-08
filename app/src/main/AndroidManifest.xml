@@ -2,38 +2,59 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ashmakesstuff.bunky">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE">
+    </uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET">
+    </uses-permission>
+
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_rules">
-        <activity android:name="com.ashmakesstuff.bunky.MainActivity">
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true">
+        <activity
+            android:name=".MainActivity"
+            android:label="Bunky"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ashmakesstuff.bunky.EditorActivity"
+            android:name=".EditorActivity"
             android:label="Add a Course"
-            android:theme="@style/EditorTheme"
-            android:parentActivityName="com.ashmakesstuff.bunky.MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/EditorTheme">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ashmakesstuff.bunky.EditorActivity" />
         </activity>
+
         <provider
-            android:authorities="com.ashmakesstuff.bunky"
             android:name=".data.CourseProvider"
-            android:exported="false"/>
+            android:authorities="com.ashmakesstuff.bunky"
+            android:exported="false" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ad_app_id"/>
+
+        <activity
+            android:name=".AboutActivity"
+            android:label="About"
+            android:theme="@style/AboutTheme"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

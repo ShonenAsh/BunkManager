@@ -12,7 +12,13 @@
 -->
 <resources>
     <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AboutTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -22,7 +28,7 @@
     <style name="EditorTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/editorColorPrimary</item>
         <item name="colorPrimaryDark">@color/editorColorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <!-- Style for a category in the editor -->
@@ -31,7 +37,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:paddingTop">16dp</item>
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
@@ -45,16 +51,5 @@
     </style>
 
     <!-- Style for the measurement units for an EditText field in the editor -->
-    <style name="EditorUnitsStyle">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:textAppearance">?android:textAppearanceSmall</item>
-    </style>
 
-    <style name="TestTheme" parent="Theme.AppCompat.NoActionBar" />
-
-    <style name="Trial.TestTheme.Light.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>

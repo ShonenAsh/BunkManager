@@ -64,23 +64,21 @@ object CourseContract {
             //  The classroom the course is conducted in : TEXT
             const val COLUMN_CLASSROOM = "classroom"
 
-            //  Name of the course instructor : TEXT
-            const val COLUMN_INSTRUCTOR = "instructor"
-
-            // Credits for the course : REAL
-            const val COLUMN_COURSE_CREDITS = "credits"
-
             // Number of Classes attended : INTEGER
             const val COLUMN_CLASSES_BUNKED = "bunked"
 
             // Number of Classes conducted : INTEGER
             const val COLUMN_CLASSES_CONDUCTED = "conducted"
 
+            // Lasted updated time : INTEGER
+
+            const val COLUMN_LAST_UPDATED = "lastedUpdated"
+
             // ID for Bunk Button
-            const val BUNK_BUTTON =0
+            const val BUNK_BUTTON = 0
 
             // ID for Attend Button
-            const val  ATTEND_BUTTON=1
+            const val ATTEND_BUTTON = 1
 
         }
     }

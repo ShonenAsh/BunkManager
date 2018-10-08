@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Layout for a single list item in the list of pets -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/list_item_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        app:cardBackgroundColor="@color/primaryTextColor"
+        app:cardCornerRadius="6dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true">
 
@@ -16,27 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/button_attend"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="8dp"
-                android:drawableStart="@drawable/ic_attend_24dp"
-                android:elevation="16dp"
-                android:fontFamily="@font/allerta"
-                android:text="Attend"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/button_bunk" />
-
             <TextView
                 android:id="@+id/course_name_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
                 android:fontFamily="@font/allerta"
                 android:text="Course Name"
                 android:textColor="#2B3D4D"
@@ -45,28 +35,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/button_bunk"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:drawableStart="@drawable/ic_bunk_24dp"
-                android:elevation="16dp"
-                android:fontFamily="@font/allerta"
-                android:text="Bunk"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/safe_bunks_text_view" />
 
             <TextView
                 android:id="@+id/safe_bunks_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/allerta"
                 android:text="Safe Bunks :"
                 android:textColor="#AEB6BD"
@@ -77,21 +52,15 @@
             <TextView
                 android:id="@+id/percent_text_view"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
                 android:fontFamily="@font/allerta"
                 android:text="100"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textSize="72sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/percent_symbol_text_view"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline"
@@ -100,7 +69,7 @@
                 android:layout_marginEnd="335dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.6"
+                app:layout_constraintGuide_percent="0.55"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -116,13 +85,89 @@
             <TextView
                 android:id="@+id/percent_symbol_text_view"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="32dp"
                 android:text="%"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/safe_bunks_text_view">
+
+                <Button
+                    android:id="@+id/button_bunk"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:drawableStart="@drawable/ic_bunk_black_24dp"
+                    android:focusable="true"
+                    android:fontFamily="@font/allerta"
+                    android:hapticFeedbackEnabled="true"
+                    android:text="Bunk"
+                    android:textColor="@color/alertColor"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/button_attend"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <Button
+                    android:id="@+id/button_attend"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_attend_black_24dp"
+                    android:focusable="true"
+                    android:fontFamily="@font/allerta"
+                    android:hapticFeedbackEnabled="true"
+                    android:text="Attend"
+                    android:textColor="@color/alertColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/button_bunk"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/update_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="@font/allerta"
+                    android:text="Updated just now"
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/safeBunksColor"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ic_time"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ic_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="6dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/button_attend"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_access_time_black_18dp" />
+
+            </android.support.constraint.ConstraintLayout>
+
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

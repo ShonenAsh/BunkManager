@@ -7,6 +7,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
 import android.util.Log
+import java.util.*
 
 
 class CourseProvider : ContentProvider() {
@@ -59,14 +60,13 @@ class CourseProvider : ContentProvider() {
                 selection = CourseContract.CourseEntry._ID + "=?"
                 selectionArgs = arrayOf(ContentUris.parseId(uri).toString())
 
-                // This will perform a query on the pets table where the _id equals 3 to return a
-                // Cursor containing that row of he table.
+                // This will perform a query on the course table where the _id equals 3 to return a
+                // Cursor containing that row of the table.
                 cursor = database.query(CourseContract.CourseEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder)
             }
 
             else -> throw IllegalArgumentException(" Cannot query unknown URI $uri")
         }
-
         // Set notification URI on the Cursor,
         // so we know what content URI the Cursor was created for.
         // If the data at this URI changes, then we know we need to update the Cursor
@@ -80,9 +80,9 @@ class CourseProvider : ContentProvider() {
      */
     override fun getType(uri: Uri): String? {
         val match = sUriMatcher.match(uri)
-        when (match) {
-            COURSES -> return CourseContract.CourseEntry.CONTENT_LIST_TYPE
-            COURSE_ID -> return CourseContract.CourseEntry.CONTENT_ITEM_TYPE
+        return when (match) {
+            COURSES -> CourseContract.CourseEntry.CONTENT_LIST_TYPE
+            COURSE_ID -> CourseContract.CourseEntry.CONTENT_ITEM_TYPE
             else -> throw IllegalArgumentException("Unknown URI " + " with " +
                     "match" + match)
         }
@@ -102,9 +102,16 @@ class CourseProvider : ContentProvider() {
 
     // Insert pet helper method
     private fun insertCourse(uri: Uri, values: ContentValues): Uri? {
+        // Since the its a new Course, the last update time is "0"
+
+        values.put(CourseContract.CourseEntry.COLUMN_LAST_UPDATED,0L)
+
         // Check that the name is not null
         val name = values.getAsString(CourseContract.CourseEntry.COLUMN_COURSE_NAME)
                 ?: throw IllegalArgumentException("Course requires a name")
+
+        val updateTime = values.getAsLong(CourseContract.CourseEntry.COLUMN_LAST_UPDATED)
+                ?: throw IllegalArgumentException("Update time cannot be null")
 
         // Check if the conducted is not null
         val conducted = values.getAsInteger(CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED)
@@ -120,11 +127,11 @@ class CourseProvider : ContentProvider() {
             throw IllegalArgumentException("Classes BUNKED must be positive")
 
 
-        // No need to check for classroom, credits, instructor any value is valid (including null)
+        // No need to check for classroom any value is valid (including null)
 
         // Get writable database
         val database = mDbHelper.writableDatabase
-        // Insert a new pet with the given values
+        // Insert a new course with the given values
         val id = database.insert(CourseContract.CourseEntry.TABLE_NAME, null, values)
         // if the id is -1 , insertion failed
         if (id.equals(-1)) {
@@ -191,6 +198,13 @@ class CourseProvider : ContentProvider() {
     }
 
     private fun updateCourse(uri: Uri, values: ContentValues, selection: String?, selectionArgs: Array<String>?): Int {
+        // Getting the current time
+        val currentDate = Date()
+        val currentTime = currentDate.time
+
+        // Putting time in values
+        values.put(CourseContract.CourseEntry.COLUMN_LAST_UPDATED,currentTime)
+
         // If the {@link CourseEntry#COLUMN_COURSE_NAME} key is present,
         // check that the name value is not null.
         if (values.containsKey(CourseContract.CourseEntry.COLUMN_COURSE_NAME)) {
@@ -198,11 +212,20 @@ class CourseProvider : ContentProvider() {
                     ?: throw IllegalArgumentException("Course requires a name")
         }
 
+
+        // If the {@link CourseEntry#COLUMN_CLASSES_CONDUCTED} key is present,
+        // check that the update time of the course is valid
+        if (values.containsKey(CourseContract.CourseEntry.COLUMN_LAST_UPDATED)) {
+            val conducted = values.getAsLong(CourseContract.CourseEntry.COLUMN_LAST_UPDATED)
+                    ?: throw IllegalArgumentException("Time of update cannot be null")
+        }
+
         // If the {@link CourseEntry#COLUMN_CLASSES_CONDUCTED} key is present,
         // check that the number of classes conducted is valid
         if (values.containsKey(CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED)) {
             val conducted = values.getAsInteger(CourseContract.CourseEntry.COLUMN_CLASSES_CONDUCTED)
                     ?: throw IllegalArgumentException("Number of classes CONDUCTED cannot be null")
+            // Check that the conducted classes are greater than or equal to 1
             if (conducted < 1)
                 throw IllegalArgumentException("Number of classes CONDUCTED must be more than 0")
         }
@@ -210,15 +233,14 @@ class CourseProvider : ContentProvider() {
         // If the {@link CourseEntry#COLUMN_CLASSES_BUNKED} key is present,
         // check that number of bunked value is valid
         if (values.containsKey(CourseContract.CourseEntry.COLUMN_CLASSES_BUNKED)) {
-            // Check that the weight is greater than or equal to 0 kg
+            // Check that the bunked classes are greater than or equal to 0
             val bunked = values.getAsInteger(CourseContract.CourseEntry.COLUMN_CLASSES_BUNKED)
                     ?: throw IllegalArgumentException("Number of classes BUNKED cannot be null")
             if (bunked < 0)
                 throw IllegalArgumentException("Number of classes BUNKED must be positive or zero")
-
         }
 
-        // No need to check for classroom, credits, instructor any value is valid (including null)
+        // No need to check for classroom any value is valid (including null)
         // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {
             return 0

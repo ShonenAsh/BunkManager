@@ -1,16 +1,15 @@
 <resources>
-    <string name="app_name">Bunky</string>
+    <string name="app_name">Bunky - Your Attendance Manager</string>
     <string name="classes_overview">Classes</string>
     <string name="course_overview">Course</string>
     <string name="course_hint_name">Name</string>
-    <string name="course_hint_credits">Credits</string>
-    <string name="instructor_overview">Instructor</string>
-    <string name="instructor_hint_name">Name</string>
     <string name="course_hint_classroom">Classroom</string>
     <string name="classes_hint_bunked">Bunked</string>
     <string name="classes_hint_conducted">Conducted</string>
     <string name="delete_dialog_msg">Delete this course?</string>
+    <string name="delete_all_dialog_msg">Delete all courses?</string>
     <string name="delete">Delete</string>
+    <string name="insta_id">\@shonenash</string>
     <string name="cancel">Cancel</string>
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
     <string name="discard">Discard</string>
@@ -21,4 +20,9 @@
     <string name="editor_update_course_successful">Course updated</string>
     <string name="required_classes">Required :</string>
     <string name="safe_bunks">Safe Bunks:</string>
+    <string name="never_updated">Never updated</string>
+    <string name="updated_now">Updated just now</string>
+    <string name="editor_bottom_ad_banner">ca-app-pub-9821946717405381/7430627334</string>
+    <string name="main_bottom_ad_banner">ca-app-pub-9821946717405381/6253337105</string>
+    <string name="ad_app_id">ca-app-pub-9821946717405381~9393386202</string>
 </resources>

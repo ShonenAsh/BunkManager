@@ -6,11 +6,6 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_insert_dummy_data"
-        android:title="Insert Dummy Data"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_delete_all_entries"
         android:title="Delete All"
         app:showAsAction="never" />
